@@ -1,10 +1,51 @@
 <form action="">
   <div class="row">
-  
-      <upload-csv1 (columnNamesFile1)="handleFile1Upload($event)" ></upload-csv1>
-      <upload-csv1></upload-csv1>
-    
+    <upload-csv1 (returnFile1Data)="handleFile1Upload($event)"></upload-csv1>
+    <upload-csv2 (returnFile2Data)="handleFile2Upload($event)"></upload-csv2>
+  </div>
 
+  <br>
+
+  <div class="col-md-3 col-md-offset-2" tabindex="0">
+    <label for="KeyColddf1">File1</label>
+    <ng-multiselect-dropdown [ngClass]="{disabled: isDisabled}" [placeholder]="'Key Column File1'" [data]="colFile1"
+      [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onColSelectFile1($event)"
+      (onSelectAll)="onSelectAll($event)">
+    </ng-multiselect-dropdown>
+  </div>
+
+  <div class="col-md-3 col-md-offset-2" tabindex="0">
+    <label for="KeyColddf2">File2</label>
+    <ng-multiselect-dropdown [placeholder]="'Key Column File2'" [data]="colFile2" [(ngModel)]="selectedItems"
+      [settings]="dropdownSettings" (onSelect)="onColSelectFile2($event)" (onSelectAll)="onSelectAll($event)">
+    </ng-multiselect-dropdown>
+  </div>
+  <br>
+  <br>
+
+  <div class="col-md-3 col-md-offset-2">
+    <check-box (checkBoxChecked)="checkBoxEvent($event)"></check-box>
+  </div>
+
+
+  <div class="row">
 
   </div>
+
+  <div class="col-md-3 col-md-offset-2" tabindex="0">
+    <label for="KeyColddf1">File1</label>
+    <ng-multiselect-dropdown [placeholder]="'Group Column File1'" [data]="colFile1" [(ngModel)]="selectedItems"
+      [settings]="dropdownSettings" (onSelect)="onColSelectFile1Group($event)" (onSelectAll)="onSelectAll($event) "
+      [ngClass]="dropdownAction()">
+    </ng-multiselect-dropdown>
+  </div>
+
+  <div class="col-md-3 col-md-offset-2" tabindex="0">
+    <label for="KeyColddf2">File2</label>
+    <ng-multiselect-dropdown [placeholder]="'Group Column File2'" [data]="colFile2" [(ngModel)]="selectedItems"
+      [settings]="dropdownSettings" (onSelect)="onColSelectFile2Group($event)" (onSelectAll)="onSelectAll($event)"
+      [ngClass]="dropdownAction()">
+    </ng-multiselect-dropdown>
+  </div>
+
 </form>

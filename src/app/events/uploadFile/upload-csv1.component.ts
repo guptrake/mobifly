@@ -9,12 +9,12 @@ import { Component, EventEmitter, Output} from '@angular/core';
     `]
 })
 export class UploadCsvComponentFile1 {
-@Output() columnNamesFile1 = new EventEmitter();
+@Output() returnFile1Data = new EventEmitter();
 
 
-  getCSVColumns(event) {
+getFile1Data(eventFile1Upload) {
     //this.handleFileSelect(event)
-    this.columnNamesFile1.emit(event);
+    this.returnFile1Data.emit(eventFile1Upload);
   }
 
   // handleFileSelect(event) {

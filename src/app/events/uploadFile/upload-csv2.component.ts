@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -6,11 +6,13 @@ import { Component } from '@angular/core';
     templateUrl: './upload-csv2.html',
     styles: [`
     
-    
-    
-
     `]
 })
 export class UploadCsvComponentFile2 {
+    @Output() returnFile2Data = new EventEmitter();
+
+    getFile2Data(eventFile2Upload) {
+        this.returnFile2Data.emit(eventFile2Upload);
+    }
 
 }
