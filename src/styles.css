@@ -5,13 +5,38 @@ label{
     color: black;
     font-size: 12px
 }
+h1{
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
+    
+}
  .btn {
     border: 1px solid #c9302c    
 }
-
+hr {
+    display: block;
+    unicode-bidi: isolate;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    overflow: hidden;
+    border-style: inset;
+    border-width: 1px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+}
 
 input[type="checkbox"] {
     margin: 40px 0 0;
     line-height: inherit;
 color:rgba(0,0,0,.87);
+}
+
+input[type=file] {
+    width: 17em;
+}
+.text-color{
+color: black
 }
