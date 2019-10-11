@@ -8,6 +8,7 @@ import {GroupCheckBox} from './events/group/group.checkbox.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormsModule } from '@angular/forms'; 
 import { ReactiveFormsModule } from '@angular/forms';
+import {NonKeyValueColumn} from './events/nonkeyvalue/non-keyvalue-column.component'
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     UploadCsvComponentFile1,
     UploadCsvComponentFile2,
-    GroupCheckBox
+    GroupCheckBox,
+    NonKeyValueColumn
    
     
   ],

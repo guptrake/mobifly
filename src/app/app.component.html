@@ -8,37 +8,37 @@
           <upload-csv1 (returnFile1Data)="handleFile1Upload($event)"></upload-csv1>
           <upload-csv2 (returnFile2Data)="handleFile2Upload($event)"></upload-csv2>
         </div>
-
-
         <div class="row">
           <h1>Key Columns</h1>
           <hr>
 
           <div class="col-md-3 col-md-offset-2" tabindex="0">
             <label for="KeyColddf1">File1</label>
-            <ng-multiselect-dropdown class = "text-color" [ngClass]="{disabled: isDisabled}" [placeholder]="'Key Column File1'"
-              [data]="colFile1" [(ngModel)]="selectedItems" [settings]="dropdownSettings"
-              (onSelect)="onColSelectFile1($event)" (onSelectAll)="onSelectAll($event)" (onDeSelect)="removeKeyColFile1($event)">
+            <ng-multiselect-dropdown class="text-color" [ngClass]="{disabled: isDisabled}"
+              [placeholder]="'Key Column File1'" [data]="colFile1" [(ngModel)]="selectedItems"
+              [settings]="dropdownSettings" (onSelect)="onColSelectFile1($event)" (onSelectAll)="onSelectAll($event)"
+              (onDeSelect)="removeKeyColFile1($event)">
             </ng-multiselect-dropdown>
           </div>
 
           <div class="col-md-3 col-md-offset-2" tabindex="0">
             <label for="KeyColddf2">File2</label>
-            <ng-multiselect-dropdown class = "text-color" [placeholder]="'Key Column File2'" [data]="colFile2" [(ngModel)]="selectedItems"
-              [settings]="dropdownSettings" (onSelect)="onColSelectFile2($event)" (onSelectAll)="onSelectAll($event)" (onDeSelect)="removeKeyColFile2($event)">
+            <ng-multiselect-dropdown class="text-color" [placeholder]="'Key Column File2'" [data]="colFile2"
+              [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onColSelectFile2($event)"
+              (onSelectAll)="onSelectAll($event)" (onDeSelect)="removeKeyColFile2($event)">
             </ng-multiselect-dropdown>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3 col-md-offset-2">
-            <check-box class = "text-color" (checkBoxChecked)="checkBoxEvent($event)"></check-box>
+            <check-box class="text-color" (checkBoxChecked)="checkBoxEvent($event)"></check-box>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3 col-md-offset-2" tabindex="0">
             <label for="KeyColddf1">File1</label>
-            <ng-multiselect-dropdown class = "text-color" [placeholder]="'Group Column File1'" [data]="colFile1" [(ngModel)]="selectedItems"
-              [settings]="dropdownSettings" (onSelect)="onColSelectFile1Group($event)"
+            <ng-multiselect-dropdown class="text-color" [placeholder]="'Group Column File1'" [data]="colFile1"
+              [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onColSelectFile1Group($event)"
               (onSelectAll)="onSelectAll($event) " [ngClass]="dropdownAction()"
               (onDeSelect)="removeColFile1Group($event)">
             </ng-multiselect-dropdown>
@@ -46,18 +46,19 @@
 
           <div class="col-md-3 col-md-offset-2" tabindex="0">
             <label for="KeyColddf2">File2</label>
-            <ng-multiselect-dropdown class = "text-color" [placeholder]="'Group Column File2'" [data]="colFile2" [(ngModel)]="selectedItems"
-              [settings]="dropdownSettings" (onSelect)="onColSelectFile2Group($event)"
-              (onSelectAll)="onSelectAll($event)" [ngClass]="dropdownAction()" (onDeSelect)="removeColFile2Group($event)">
+            <ng-multiselect-dropdown class="text-color" [placeholder]="'Group Column File2'" [data]="colFile2"
+              [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onColSelectFile2Group($event)"
+              (onSelectAll)="onSelectAll($event)" [ngClass]="dropdownAction()"
+              (onDeSelect)="removeColFile2Group($event)">
             </ng-multiselect-dropdown>
           </div>
         </div>
 
-
+        <non-keyvaluecolumn [nonkeycolfile1]="colFile1" [nonkeycolfile2] ="colFile2"></non-keyvaluecolumn>
 
         <div class="row">
-            <h1>Generate File</h1>
-            <hr>
+          <h1>Generate File</h1>
+          <hr>
           <div>
             <button type="submit" class="btn btn-success col-md-3 col-md-offset-4" (click)="printJSON()">Submit</button>
           </div>
