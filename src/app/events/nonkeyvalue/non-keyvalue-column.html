@@ -5,14 +5,16 @@
         <div class="col-md-2 col-md-offset-2" tabindex="0">
             <label for="KeyColddf1">File1</label>
             <ng-multiselect-dropdown class="text-color" [placeholder]="'NonKeyValue'" [data]="nonkeycolfile1"
-                [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onNonKeyColSelectFile1($event)">
+                [(ngModel)]="selectedItemsfile1" [settings]="dropdownSettings" (onSelect)="onNonKeyColSelectFile1($event)"
+                (onDeSelect)="updateColListFile1($event)">
             </ng-multiselect-dropdown>
         </div>
 
         <div class="col-md-2 col-md-offset-1" tabindex="0">
             <label for="KeyColddf2">File2</label>
             <ng-multiselect-dropdown class="text-color" [placeholder]="'NonKeyValue'" [data]="nonkeycolfile2"
-                [(ngModel)]="selectedItems1" [settings]="dropdownSettings" (onSelect)="onColSelectFile2Grop($event)">
+                [(ngModel)]="selectedItemsfile2" [settings]="dropdownSettings" (onSelect)="onNonKeyColSelectFile2($event)"
+                (onDeSelect)="updateColListFile2()">
             </ng-multiselect-dropdown>
         </div>
 
@@ -21,11 +23,11 @@
         <div class="col-md-2 col-md-offset-2" tabindex="0">
             <form>
                 <label for="nTolrence">Negative Tolrence Limit</label>
-                <input id="nTolrence" type="text" name=""> <br>
+                <input id="nTolrence" #negTol type="text" (blur)="negativeTolrence(negTol.value)">
                 <label for="pTolrence">Positive Tolrence Limit</label>
-                <input id="pTolrence" type="text" name=""><br>
+                <input id="pTolrence" #posTol type="text" (blur)="positiveTolrence(posTol.value)">
                 <label for="oHeading">Output Column Heading </label>
-                <input id="oHeading" type="text" value=""><br>
+                <input id="oHeading" #oheading type="text" (blur)="outputHeading(oheading.value)">
             </form>
         </div>
 

@@ -21,6 +21,11 @@ export class AppComponent implements OnInit {
   isGroup: any = false;
   groupColumnFile1: any[] = [];
   groupColumnFile2: any[] = [];
+  nonKeyValueColumnsFile1:any
+  nonKeyValueColumnsFile2:any
+  negTolrence: any;
+  posTolrence: any;
+  outputHeading: any;
 
 
 
@@ -70,7 +75,7 @@ export class AppComponent implements OnInit {
   removeKeyColFile1(colRemoved) {
     //const colNumberToRemove = this.groupColumnFile1.indexOf(colRemoved) + 1;
     this.keyColumnsFile1 = this.keyColumnsFile1.filter(item => item !== colRemoved)
-//console.log(this.keyColumnsFile1)
+    //console.log(this.keyColumnsFile1)
   }
   removeKeyColFile2(colRemoved) {
     //const colNumberToRemove = this.groupColumnFile1.indexOf(colRemoved) + 1;
@@ -105,6 +110,22 @@ export class AppComponent implements OnInit {
     return { locked: !this.isGroup }
   }
 
+  getNonKeyValueColFile1(data) {
+    this.nonKeyValueColumnsFile1 = data
+  }
+  getNonKeyValueColFile2(data) {
+    this.nonKeyValueColumnsFile2 = data
+  }
+  getNegativeTolrenceVal(data) {
+    this.negTolrence = data;
+  }
+  getPositiveTolrenceVal(data) {
+    this.posTolrence = data;
+  }
+  getOutputHeadingVal(data) {
+    this.outputHeading = data;
+  }
+
   printJSON() {
     console.log('file array', this.fileArray);
     console.log('keyColumnsFile1', this.keyColumnsFile1);
@@ -112,6 +133,13 @@ export class AppComponent implements OnInit {
     console.log('is group', this.isGroup);
     console.log('groupColumnFile1', this.groupColumnFile1);
     console.log('groupColumnFile2', this.groupColumnFile2);
+
+console.log('===STEP3====')
+    console.log('nonKeyValueColumnsFile1', this.nonKeyValueColumnsFile1);
+    console.log('nonKeyValueColumnsFile2', this.nonKeyValueColumnsFile2);
+    console.log('negTolrence', this.negTolrence);
+    console.log('posTolrence', this.posTolrence);
+    console.log('outputHeading', this.outputHeading);
 
   }
 

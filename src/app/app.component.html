@@ -54,7 +54,13 @@
           </div>
         </div>
 
-        <non-keyvaluecolumn [nonkeycolfile1]="colFile1" [nonkeycolfile2] ="colFile2"></non-keyvaluecolumn>
+        <non-keyvaluecolumn [nonkeycolfile1]="colFile1" [nonkeycolfile2] ="colFile2"
+        (nonkeyvaluecolfile1)="getNonKeyValueColFile1($event)"
+        (nonkeyvaluecolfile2)="getNonKeyValueColFile2($event)"
+        (negativeTolrenceVal)="getNegativeTolrenceVal($event)"
+        (positiveTolrenceVal)="getPositiveTolrenceVal($event)"
+        (outputHeadingValue)="getOutputHeadingVal($event)"
+        ></non-keyvaluecolumn>
 
         <div class="row">
           <h1>Generate File</h1>
