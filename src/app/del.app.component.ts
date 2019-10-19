@@ -1,48 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms'
 
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './reactiveForm.app.component.html',
+  selector: 'app-root1',
+  templateUrl: './app.component.html',
   styles: [`
   .locked {pointer-events:none;}
   `]
 })
 export class AppComponent implements OnInit {
-
-  constructor(private _fb: FormBuilder) {
-
-  }
-
   title = 'mobifly-app';
   colFile1: string[];
   colFile2: string[];
-  // selectedItems = [];
+  selectedItems = [];
   dropdownSettings = {};
-  singledropdownSettings = {};
   fileArray: any[] = [];
   keyColumnsFile1: any[] = [];
   keyColumnsFile2: any[] = [];
   isGroup: any = false;
-  isNonKeyChecked:any= false;
   groupColumnFile1: any[] = [];
   groupColumnFile2: any[] = [];
-  nonKeyValueColumnsFile1: any
-  nonKeyValueColumnsFile2: any
+  nonKeyValueColumnsFile1:any
+  nonKeyValueColumnsFile2:any
   negTolrence: any;
   posTolrence: any;
   outputHeading: any;
-  nonKeyNonValueColumnsFile1: any;
-  nonKeyNonValueColumnsFile2: any;
-  outputHeadingNonvalue: any;
-  email: any;
-  outputFileName: any;
+  nonKeyNonValueColumnsFile1:any;
+  nonKeyNonValueColumnsFile2:any;
+  outputHeadingNonvalue:any;
+  email:any;
+  outputFileName:any;
 
 
 
-  nestedForm: FormGroup;
 
 
 
@@ -78,75 +69,7 @@ export class AppComponent implements OnInit {
       itemsShowLimit: 10,
       allowSearchFilter: true
     };
-    this.singledropdownSettings = {
-      singleSelection: true,
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 10,
-      allowSearchFilter: true
-    }
-
-    this.nestedForm = this._fb.group({
-      file1: [],
-      file2: [],
-      keyColFile1: [],
-      keyColFile2: [],
-      isGroupCol: [],
-      groupColFile1: [],
-      groupColFile2: [],
-      nonKeyValueCol: this._fb.array([this.addNonKeyValueCol()]),
-      isNonKey:[],
-      nonKeyNonValueCol: this._fb.array([this.addNonKeyNonValueCol()]),
-      email:[],
-      outputFileName:[]
-
-    })
   }
-  addNonKeyValueCol() {
-    return this._fb.group({
-      nonKeyvalueColFile1: [],
-      nonKeyvalueColFile2: [],
-      negativetolrence: [],
-      positiveTolrence: [],
-      outputColHeading: []
-    })
-  }
-  addNonKeyNonValueCol() {
-    return this._fb.group({
-      nonKeyNonvalueColFile1: [],
-      nonKeyNonvalueColFile2: [],
-      outputColHeadingNonValue: []
-    })
-  }
-  get addNonKeyValueColArray() {
-    return <FormArray>this.nestedForm.get('nonKeyValueCol');
-  }
-
-  get addNonKeyNonValueColArray() {
-    return <FormArray>this.nestedForm.get('nonKeyNonValueCol');
-  }
-  addMoreNonKeyValueCol() {
-    this.addNonKeyValueColArray.push(this.addNonKeyValueCol())
-  }
-  removeNonKeyValueCol(index) {
-    console.log('indexis', index)
-    this.addNonKeyValueColArray.removeAt(index);
-  }
-  addMoreNonKeyNonValueCol() {
-    this.addNonKeyNonValueColArray.push(this.addNonKeyNonValueCol())
-  }
-  removeNonKeyNonValueCol(index) {
-    console.log('indexis', index)
-    this.addNonKeyNonValueColArray.removeAt(index);
-  }
-  isGroupSelected(data) {
-    console.log("grp selection", data)
-    this.isGroup = true
-
-  }
-
-
   onColSelectFile1(keyCol: any) {
     //this.keyColumnsFile1.push(this.colFile1.indexOf(keyCol));
     this.keyColumnsFile1.push(keyCol);
@@ -192,13 +115,6 @@ export class AppComponent implements OnInit {
   dropdownAction() {
     return { locked: !this.isGroup }
   }
-  isNonKeyDDChecked(){
-    return { locked: !this.isNonKeyChecked }
-  }
-  nonKeycheckBoxEvent(data) {
-    this.isNonKeyChecked = data.target.checked;
-    this.isNonKeyDDChecked();
-  }
 
   getNonKeyValueColFile1(data) {
     this.nonKeyValueColumnsFile1 = data
@@ -216,24 +132,45 @@ export class AppComponent implements OnInit {
     this.outputHeading = data;
   }
 
-  getNonKeyNonValueColFile1(data) {
-    this.nonKeyNonValueColumnsFile1 = data
+  getNonKeyNonValueColFile1(data){
+    this.nonKeyNonValueColumnsFile1=data
   }
-  getNonKeyNonValueColFile2(data) {
-    this.nonKeyNonValueColumnsFile2 = data
+  getNonKeyNonValueColFile2(data){
+    this.nonKeyNonValueColumnsFile2=data
   }
-  getOutputHeadingNonVal(data) {
-    this.outputHeadingNonvalue = data
+  getOutputHeadingNonVal(data){
+    this.outputHeadingNonvalue=data
   }
-  getEmail(data) {
+  getEmail(data){
     this.email = data;
   }
-  getFileName(data) {
+  getFileName(data){
     this.outputHeading = data;
   }
   printJSON() {
-    console.log('file array', this.nestedForm.value);
+    console.log('file array', this.fileArray);
+    console.log('keyColumnsFile1', this.keyColumnsFile1);
+    console.log('keyColumnsFile2', this.keyColumnsFile2);
+    console.log('is group', this.isGroup);
+    console.log('groupColumnFile1', this.groupColumnFile1);
+    console.log('groupColumnFile2', this.groupColumnFile2);
 
+console.log('===STEP3====')
+    console.log('nonKeyValueColumnsFile1', this.nonKeyValueColumnsFile1);
+    console.log('nonKeyValueColumnsFile2', this.nonKeyValueColumnsFile2);
+    console.log('negTolrence', this.negTolrence);
+    console.log('posTolrence', this.posTolrence);
+    console.log('outputHeading', this.outputHeading);
+
+    console.log('===STEP4====')
+    console.log('nonKeyNonValueColumnsFile1', this.nonKeyNonValueColumnsFile1);
+    console.log('nonKeyNonValueColumnsFile2', this.nonKeyNonValueColumnsFile2);
+    console.log('outputHeadingNonvalue', this.outputHeadingNonvalue);
+
+    console.log('===STEP5====')
+    console.log('email', this.email);
+    console.log('outputHeading', this.outputHeading);
+    
 
   }
 

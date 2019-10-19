@@ -1,0 +1,15 @@
+<div>
+    <h1>Email Notification</h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-2 col-md-offset-2" tabindex="0">
+            <form>
+                <label for="email">Email</label>
+                <input id="email" #emailInput type="text" (blur)="onEmailInput(emailInput.value)">
+                <label for="filename">Output File Name</label>
+                <input id="filename" #oFileName type="text" (blur)="onFileNameInput(oFileName.value)">
+            </form>
+        </div>
+    </div>
+
+</div>

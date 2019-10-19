@@ -1,0 +1,203 @@
+<div class="container">
+    <div class="page padding-bottom-20">
+        <div class="col-md-12">
+            <form action="" [formGroup]="nestedForm">
+                <div class="row">
+                    <h1>Input File</h1>
+                    <hr>
+                    <div class="col-md-3 col-md-offset-2">
+                        <label for="fileInput1">File 1</label>
+                        <input type="file" id="fileInput1" name="file1"
+                            class="btn btn-secondary custom-button upload font_famliy" aria-haspopup="true"
+                            id="input-file1" required="required" (change)="handleFile1Upload($event)"
+                            formControlName="file1">
+                        <img title="You can upload ZIP or CSV File. ZIP can have only 1 file. Name of File shall be same as ZIP File"
+                            src="http://pwcnic-2100337383.ap-south-1.elb.amazonaws.com/revreco-app2/assets/images/info2.png"
+                            style="position:absolute;top:35px;right: -24px;">
+                    </div>
+
+                    <div class="col-md-3 col-md-offset-2">
+                        <label for="fileInput2">File 2</label>
+                        <input type="file" id="fileInput2" name="file2" class="btn btn-secondary upload size_20"
+                            aria-haspopup="true" id="input-file2" required="required" formControlName="file2"
+                            (change)="handleFile2Upload($event)">
+                        <img title="You can upload ZIP or CSV File. ZIP can have only 1 file. Name of File shall be same as ZIP File"
+                            src="http://pwcnic-2100337383.ap-south-1.elb.amazonaws.com/revreco-app2/assets/images/info2.png"
+                            style="position:absolute;top:35px;right: -24px;">
+                    </div>
+                </div>
+                <div class="row">
+                    <h1>Key Columns</h1>
+                    <hr>
+
+                    <div class="col-md-3 col-md-offset-2" tabindex="0">
+                        <label for="KeyColddf1">File1</label>
+                        <ng-multiselect-dropdown class="text-color" formControlName="keyColFile1"
+                            [placeholder]="'Key Column File1'" [data]="colFile1" [settings]="dropdownSettings">
+                        </ng-multiselect-dropdown>
+                    </div>
+
+                    <div class="col-md-3 col-md-offset-2" tabindex="0">
+                        <label for="KeyColddf2">File2</label>
+                        <ng-multiselect-dropdown class="text-color" formControlName="keyColFile2"
+                            [placeholder]="'Key Column File2'" [data]="colFile2" [(ngModel)]="selectedItems"
+                            [settings]="dropdownSettings">
+                        </ng-multiselect-dropdown>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        <input id="groupcolumns" type="checkbox" formControlName="isGroupCol"
+                            (change)="isGroupSelected($event)"> Is Group?
+                        <img title="By default, output results are grouped at key columns. Select 'Is Group' to add any other column
+                             in addition to the key column for grouping.For example if invoice no. is a key column then all value columns
+                              would be clubbed at invoice level.If grouping is required at invoice and rate level, then rate column can be
+                            captured here"
+                            src="http://pwcnic-2100337383.ap-south-1.elb.amazonaws.com/revreco-app2/assets/images/info2.png"
+                            style="position:absolute;top:40px;right: 170px;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2" tabindex="0">
+                        <label for="KeyColddf1">File1</label>
+                        <ng-multiselect-dropdown class="text-color" [placeholder]="'Group Column File1'"
+                            [data]="colFile1" [settings]="dropdownSettings" [ngClass]="dropdownAction()"
+                            formControlName="groupColFile1">
+                        </ng-multiselect-dropdown>
+                    </div>
+
+                    <div class="col-md-3 col-md-offset-2" tabindex="0">
+                        <label for="KeyColddf2">File2</label>
+                        <ng-multiselect-dropdown class="text-color" [placeholder]="'Group Column File2'"
+                            [data]="colFile2" [settings]="dropdownSettings" [ngClass]="dropdownAction()"
+                            formControlName="groupColFile2">
+                        </ng-multiselect-dropdown>
+                    </div>
+                </div>
+                <div>
+                    <h1>Non Key Value Column</h1>
+                    <hr>
+                    <div class="row" formArrayName="nonKeyValueCol">
+                        <div class="row" *ngFor="let item of addNonKeyValueColArray.controls; let i = index"
+                            [formGroupName]="i">
+                            <div class="col-md-2 col-md-offset-2" tabindex="0">
+                                <label for="KeyColddf1">File1</label>
+                                <ng-multiselect-dropdown class="text-color" [placeholder]="'NonKeyValue'"
+                                    [data]="colFile1" [settings]="singledropdownSettings"
+                                    formControlName="nonKeyvalueColFile1">
+                                </ng-multiselect-dropdown>
+                            </div>
+
+                            <div class="col-md-2 col-md-offset-1" tabindex="0">
+                                <label for="KeyColddf2">File2</label>
+                                <ng-multiselect-dropdown class="text-color" [placeholder]="'NonKeyValue'"
+                                    [data]="colFile2" [settings]="singledropdownSettings"
+                                    formControlName="nonKeyvalueColFile2">
+                                </ng-multiselect-dropdown>
+                            </div>
+                            <div class="col-md-2 col-md-offset-2" tabindex="0">
+
+                                <label for="nTolrence">Negative Tolrence Limit</label>
+                                <input id="nTolrence" #negTol type="text" formControlName="negativetolrence">
+                                <label for="pTolrence">Positive Tolrence Limit</label>
+                                <input id="pTolrence" #posTol type="text" formControlName="positiveTolrence">
+                                <label for="oHeading">Output Column Heading </label>
+                                <input id="oHeading" #oheading type="text" formControlName="outputColHeading">
+                            </div>
+                            <div class="row"> <br>
+                                <div class="col-md-1 col-md-offset-8" tabindex="0">
+                                    <a class="btn" (click)="addMoreNonKeyValueCol()">
+                                        <i class="glyphicon glyphicon-plus"> </i>
+                                    </a>
+                                </div>
+                                <div class="col-md-1 col-md-offset-10" [hidden]="i==0" tabindex="0">
+                                    <a class="btn" (click)="removeNonKeyValueCol(i)">
+                                        <i class="glyphicon glyphicon-minus"> </i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h1>Non Key Non Value Column</h1>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-3 col-md-offset-2">
+                            <input id="groupcolumns" type="checkbox" formControlName="isNonKey"
+                                (change)="nonKeycheckBoxEvent($event)"> Is Group?
+                            <img title="By default, output results are grouped at key columns. Select 'Is Group' to add any other column
+                                     in addition to the key column for grouping.For example if invoice no. is a key column then all value columns
+                                      would be clubbed at invoice level.If grouping is required at invoice and rate level, then rate column can be
+                                    captured here"
+                                src="http://pwcnic-2100337383.ap-south-1.elb.amazonaws.com/revreco-app2/assets/images/info2.png"
+                                style="position:absolute;top:40px;right: 170px;">
+                        </div>
+                    </div>
+                    <div class="row" formArrayName="nonKeyNonValueCol">
+                        <div class="row" *ngFor="let item of addNonKeyNonValueColArray.controls; let i = index"
+                            [formGroupName]="i">
+
+                            <div class="col-md-2 col-md-offset-2" tabindex="0">
+                                <label for="KeyColddf1">File1</label>
+                                <ng-multiselect-dropdown class="text-color" [placeholder]="'NonKeyNoValue'"
+                                    [data]="colFile1" [settings]="singledropdownSettings"
+                                    formControlName="nonKeyNonvalueColFile1" [ngClass]="isNonKeyDDChecked()">
+                                </ng-multiselect-dropdown>
+                            </div>
+
+                            <div class="col-md-2 col-md-offset-1" tabindex="0">
+                                <label for="KeyColddf2">File2</label>
+                                <ng-multiselect-dropdown class="text-color" [placeholder]="'NonKeyNoValue'"
+                                    [data]="colFile2" [settings]="singledropdownSettings"
+                                    formControlName="nonKeyNonvalueColFile2" [ngClass]="isNonKeyDDChecked()">
+                                </ng-multiselect-dropdown>
+                            </div>
+                            <div class="col-md-2 col-md-offset-2" tabindex="0">
+                                <label for="nTolrence">Output Heading Column</label>
+                                <input id="nTolrence" type="text" formControlName="outputColHeadingNonValue">
+                            </div>
+                            <div class="row"> <br>
+                                <div class="col-md-1 col-md-offset-8" tabindex="0">
+                                    <a class="btn" (click)="addMoreNonKeyNonValueCol()">
+                                        <i class="glyphicon glyphicon-plus"> </i>
+                                    </a>
+                                </div>
+                                <div class="col-md-1 col-md-offset-10" [hidden]="i==0" tabindex="0">
+                                    <a class="btn" (click)="removeNonKeyNonValueCol(i)">
+                                        <i class="glyphicon glyphicon-minus"> </i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h1>Email Notification</h1>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-2 col-md-offset-2" tabindex="0">
+
+                            <label for="email">Email</label>
+                            <input id="email" formControlName="email">
+                            <label for="filename">Output File Name</label>
+                            <input id="filename" formControlName="outputFileName">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <h1>Generate File</h1>
+                    <hr>
+                    <div>
+                        <button type="submit" class="btn btn-success col-md-3 col-md-offset-4"
+                            (click)="printJSON()">Submit</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

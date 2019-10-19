@@ -1,0 +1,32 @@
+<div>
+    <h1>Non Key Non Value Column</h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-2 col-md-offset-2" tabindex="0">
+            <label for="KeyColddf1">File1</label>
+            <ng-multiselect-dropdown class="text-color" [placeholder]="'NonKeyNoValue'" [data]="colfile1"
+                [(ngModel)]="selectedItemsfile1" [settings]="dropdownSettings"
+                (onSelect)="onNonValueColSelectFile1($event)">
+            </ng-multiselect-dropdown>
+        </div>
+
+        <div class="col-md-2 col-md-offset-1" tabindex="0">
+            <label for="KeyColddf2">File2</label>
+            <ng-multiselect-dropdown class="text-color" [placeholder]="'NonKeyNoValue'" [data]="colfile2"
+                [(ngModel)]="selectedItemsfile2" [settings]="dropdownSettings"
+                (onSelect)="onNonValueColSelectFile2($event)">
+            </ng-multiselect-dropdown>
+        </div>
+
+
+
+        <div class="col-md-2 col-md-offset-2" tabindex="0">
+            <form>
+                <label for="nTolrence">Output Heading Column</label>
+                <input id="nTolrence" #oheadingCol type="text" (blur)="outputHeadingNonValue(oheadingCol.value)">
+            </form>
+        </div>
+
+
+    </div>
+</div>
