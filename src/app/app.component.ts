@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
+import { iRecociliation } from './events/model.data'
 
 
 @Component({
@@ -26,7 +27,7 @@ export class AppComponent implements OnInit {
   keyColumnsFile1: any[] = [];
   keyColumnsFile2: any[] = [];
   isGroup: any = false;
-  isNonKeyChecked:any= false;
+  isNonKeyChecked: any = false;
   groupColumnFile1: any[] = [];
   groupColumnFile2: any[] = [];
   nonKeyValueColumnsFile1: any
@@ -40,7 +41,56 @@ export class AppComponent implements OnInit {
   email: any;
   outputFileName: any;
 
+  iresonciliation: iRecociliation={
+    reconciliation: [
+      {
+          data: {
+              input_file1: '',
+              input_file2: '',
+              output_file: '',
+              previousrun: false
+          },
+          key_columns: {
+              file1_key_columns_no: [],
+              file2_key_columns_no: [],
+              file1_group_column_no: [],
+              file2_group_column_no: [],
+              group_flag: false,
+              nonkey_truefalse_flag: false
+          },
+          nonkey_value_columns: [
+              {
+                  file1_column_no: undefined,
+                  file2_column_no: undefined,
+                  neg_tolerance_limit: '',
+                  pos_tolerance_limit: '',
+                  output_column_heading: ''
+              }
+          ],
+          nonkey_truefalse_columns: [
+              {
+                  file1_column_no: undefined,
+                  file2_column_no: undefined,
+                  output_column_heading: ''
+              }
+          ],
+          probable_match: {
+              file1_column_no: [],
+              file2_column_no: [],
+              percentage: undefined,
+              output_file: '',
+              probable_flag: false
+          }
+      }
+  ]
+    
+  }
 
+
+
+
+
+  
 
   nestedForm: FormGroup;
 
@@ -96,13 +146,36 @@ export class AppComponent implements OnInit {
       groupColFile1: [],
       groupColFile2: [],
       nonKeyValueCol: this._fb.array([this.addNonKeyValueCol()]),
-      isNonKey:[],
+      isNonKey: [],
       nonKeyNonValueCol: this._fb.array([this.addNonKeyNonValueCol()]),
-      email:[],
-      outputFileName:[]
+      email: [],
+      outputFileName: []
 
     })
-  }
+    
+    
+
+  //   this.nestedForm.valueChanges.subscribe((val=>
+  //     {
+  //       console.log('erere', val.file1)
+  //       //this.iresonciliation.reconciliation[0].data.input_file1 = val.file1.split("\\")[2];
+  //       //this.iresonciliation.reconciliation[0].data.input_file2 = val.file2.split("\\")[2];
+  //       this.iresonciliation.reconciliation[0].data.output_file = val.outputFileName;
+  //       this.iresonciliation.reconciliation[0].data.previousrun = false; //need to confirm
+  //       this.iresonciliation.reconciliation[0].key_columns.file1_key_columns_no = this.getColumnNumberFile1(val.keyColFile1);  //need to confirm
+  //       this.iresonciliation.reconciliation[0].key_columns.file2_key_columns_no = this.getColumnNumberFile2(val.keyColFile2);
+
+  //       this.iresonciliation.reconciliation[0].key_columns.file1_group_column_no = this.getColumnNumberFile1(val.groupColFile1)
+  //       this.iresonciliation.reconciliation[0].key_columns.file2_group_column_no = this.getColumnNumberFile2(val.groupColFile2)
+
+  //       this.iresonciliation.reconciliation[0].key_columns.group_flag = val.isGroupCol;
+  //       this.iresonciliation.reconciliation[0].key_columns.nonkey_truefalse_flag = val.isNonKey;
+  //     }
+      
+  //     ))
+   }
+
+
   addNonKeyValueCol() {
     return this._fb.group({
       nonKeyvalueColFile1: [],
@@ -192,7 +265,7 @@ export class AppComponent implements OnInit {
   dropdownAction() {
     return { locked: !this.isGroup }
   }
-  isNonKeyDDChecked(){
+  isNonKeyDDChecked() {
     return { locked: !this.isNonKeyChecked }
   }
   nonKeycheckBoxEvent(data) {
@@ -231,10 +304,34 @@ export class AppComponent implements OnInit {
   getFileName(data) {
     this.outputHeading = data;
   }
+
+  getColumnNumberFile1(colNames: string[]): number[] {
+    console.log('column for file1 ',colNames )
+    let colNumber: number[]=[];
+    colNames.forEach((name) => colNumber.push(this.colFile1.indexOf(name)));
+    return colNumber;
+  }
+ 
+  getColumnNumberFile2(colNames: string[]): number[] {
+    console.log('column for file2 ',colNames )
+    let colNumber: number[]=[];
+    colNames.forEach((name) => colNumber.push(this.colFile2.indexOf(name)));
+    return colNumber;
+  }
   printJSON() {
-    console.log('file array', this.nestedForm.value);
+    console.log('file array', this.nested);
+        this.iresonciliation.reconciliation[0].data.input_file1 = this.nestedForm.value.file1.split("\\")[2];
+        this.iresonciliation.reconciliation[0].data.input_file2 = this.nestedForm.value.file2.split("\\")[2];
+        this.iresonciliation.reconciliation[0].data.output_file = this.nestedForm.value.outputFileName;
+        this.iresonciliation.reconciliation[0].data.previousrun = false; //need to confirm
+        this.iresonciliation.reconciliation[0].key_columns.file1_key_columns_no = this.getColumnNumberFile1(this.nestedForm.value.keyColFile1);  //need to confirm
+        this.iresonciliation.reconciliation[0].key_columns.file2_key_columns_no = this.getColumnNumberFile2(this.nestedForm.value.keyColFile2);
+        this.iresonciliation.reconciliation[0].key_columns.file1_group_column_no = this.getColumnNumberFile1(this.nestedForm.value.groupColFile1)
+        this.iresonciliation.reconciliation[0].key_columns.file2_group_column_no = this.getColumnNumberFile2(this.nestedForm.value.groupColFile2)
+        this.iresonciliation.reconciliation[0].key_columns.group_flag = this.nestedForm.value.isGroupCol;
+        this.iresonciliation.reconciliation[0].key_columns.nonkey_truefalse_flag = this.nestedForm.value.isNonKey;
 
-
+    console.log('file array', this.iresonciliation);
   }
 
 }
