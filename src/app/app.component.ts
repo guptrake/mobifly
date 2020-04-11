@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
-import { iRecociliation } from './events/model.data'
+import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
+import { iRecociliation, fileData, keyColumns, nonKeyColumn, nonKeyNonValueColumn, match } from './events/model.data'
 
 
 @Component({
@@ -9,6 +9,7 @@ import { iRecociliation } from './events/model.data'
   templateUrl: './reactiveForm.app.component.html',
   styles: [`
   .locked {pointer-events:none;}
+  
   `]
 })
 export class AppComponent implements OnInit {
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
   title = 'mobifly-app';
   colFile1: string[];
   colFile2: string[];
-  // selectedItems = [];
+
   dropdownSettings = {};
   singledropdownSettings = {};
   fileArray: any[] = [];
@@ -40,61 +41,9 @@ export class AppComponent implements OnInit {
   outputHeadingNonvalue: any;
   email: any;
   outputFileName: any;
-
-  iresonciliation: iRecociliation={
-    reconciliation: [
-      {
-          data: {
-              input_file1: '',
-              input_file2: '',
-              output_file: '',
-              previousrun: false
-          },
-          key_columns: {
-              file1_key_columns_no: [],
-              file2_key_columns_no: [],
-              file1_group_column_no: [],
-              file2_group_column_no: [],
-              group_flag: false,
-              nonkey_truefalse_flag: false
-          },
-          nonkey_value_columns: [
-              {
-                  file1_column_no: undefined,
-                  file2_column_no: undefined,
-                  neg_tolerance_limit: '',
-                  pos_tolerance_limit: '',
-                  output_column_heading: ''
-              }
-          ],
-          nonkey_truefalse_columns: [
-              {
-                  file1_column_no: undefined,
-                  file2_column_no: undefined,
-                  output_column_heading: ''
-              }
-          ],
-          probable_match: {
-              file1_column_no: [],
-              file2_column_no: [],
-              percentage: undefined,
-              output_file: '',
-              probable_flag: false
-          }
-      }
-  ]
-    
-  }
-
-
-
-
-
-  
+  nonKeyCounter = 1;
 
   nestedForm: FormGroup;
-
-
 
   handleFile1Upload(file1) {
     let _this = this;
@@ -102,7 +51,6 @@ export class AppComponent implements OnInit {
     reader.onload = function () {
       _this.fileArray.push(file1.target.files[0].name)
       _this.colFile1 = reader.result.toString().split('\n')[0].split(',');
-      console.log('yui', _this.colFile1)
     }
 
     reader.readAsText(file1.target.files[0]);
@@ -126,7 +74,8 @@ export class AppComponent implements OnInit {
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 10,
-      allowSearchFilter: true
+      allowSearchFilter: true,
+      defaultOpen: false
     };
     this.singledropdownSettings = {
       singleSelection: true,
@@ -134,13 +83,14 @@ export class AppComponent implements OnInit {
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 10,
-      allowSearchFilter: true
+      allowSearchFilter: true,
+      defaultOpen: false
     }
 
     this.nestedForm = this._fb.group({
-      file1: [],
-      file2: [],
-      keyColFile1: [],
+      file1: ['', [Validators.required]],
+      file2: ['', [Validators.required]],
+      keyColFile1: ['', [Validators.required]],
       keyColFile2: [],
       isGroupCol: [],
       groupColFile1: [],
@@ -152,44 +102,23 @@ export class AppComponent implements OnInit {
       outputFileName: []
 
     })
-    
-    
 
-  //   this.nestedForm.valueChanges.subscribe((val=>
-  //     {
-  //       console.log('erere', val.file1)
-  //       //this.iresonciliation.reconciliation[0].data.input_file1 = val.file1.split("\\")[2];
-  //       //this.iresonciliation.reconciliation[0].data.input_file2 = val.file2.split("\\")[2];
-  //       this.iresonciliation.reconciliation[0].data.output_file = val.outputFileName;
-  //       this.iresonciliation.reconciliation[0].data.previousrun = false; //need to confirm
-  //       this.iresonciliation.reconciliation[0].key_columns.file1_key_columns_no = this.getColumnNumberFile1(val.keyColFile1);  //need to confirm
-  //       this.iresonciliation.reconciliation[0].key_columns.file2_key_columns_no = this.getColumnNumberFile2(val.keyColFile2);
-
-  //       this.iresonciliation.reconciliation[0].key_columns.file1_group_column_no = this.getColumnNumberFile1(val.groupColFile1)
-  //       this.iresonciliation.reconciliation[0].key_columns.file2_group_column_no = this.getColumnNumberFile2(val.groupColFile2)
-
-  //       this.iresonciliation.reconciliation[0].key_columns.group_flag = val.isGroupCol;
-  //       this.iresonciliation.reconciliation[0].key_columns.nonkey_truefalse_flag = val.isNonKey;
-  //     }
-      
-  //     ))
-   }
-
+  }
 
   addNonKeyValueCol() {
     return this._fb.group({
-      nonKeyvalueColFile1: [],
-      nonKeyvalueColFile2: [],
-      negativetolrence: [],
-      positiveTolrence: [],
-      outputColHeading: []
+      file1_column_no: [],
+      file2_column_no: [],
+      neg_tolerance_limit: [],
+      pos_tolerance_limit: [],
+      output_column_heading: []
     })
   }
   addNonKeyNonValueCol() {
     return this._fb.group({
-      nonKeyNonvalueColFile1: [],
-      nonKeyNonvalueColFile2: [],
-      outputColHeadingNonValue: []
+      file1_column_no: [],
+      file2_column_no: [],
+      output_column_heading: []
     })
   }
   get addNonKeyValueColArray() {
@@ -201,20 +130,18 @@ export class AppComponent implements OnInit {
   }
   addMoreNonKeyValueCol() {
     this.addNonKeyValueColArray.push(this.addNonKeyValueCol())
+    console.log('total added rows', this.addNonKeyValueColArray.length)
   }
   removeNonKeyValueCol(index) {
-    console.log('indexis', index)
     this.addNonKeyValueColArray.removeAt(index);
   }
   addMoreNonKeyNonValueCol() {
     this.addNonKeyNonValueColArray.push(this.addNonKeyNonValueCol())
   }
   removeNonKeyNonValueCol(index) {
-    console.log('indexis', index)
     this.addNonKeyNonValueColArray.removeAt(index);
   }
   isGroupSelected(data) {
-    console.log("grp selection", data)
     this.isGroup = true
 
   }
@@ -306,32 +233,100 @@ export class AppComponent implements OnInit {
   }
 
   getColumnNumberFile1(colNames: string[]): number[] {
-    console.log('column for file1 ',colNames )
-    let colNumber: number[]=[];
+    let colNumber: number[] = [];
     colNames.forEach((name) => colNumber.push(this.colFile1.indexOf(name)));
     return colNumber;
   }
- 
+
   getColumnNumberFile2(colNames: string[]): number[] {
-    console.log('column for file2 ',colNames )
-    let colNumber: number[]=[];
+    let colNumber: number[] = [];
     colNames.forEach((name) => colNumber.push(this.colFile2.indexOf(name)));
     return colNumber;
   }
-  printJSON() {
-    console.log('file array', this.nested);
-        this.iresonciliation.reconciliation[0].data.input_file1 = this.nestedForm.value.file1.split("\\")[2];
-        this.iresonciliation.reconciliation[0].data.input_file2 = this.nestedForm.value.file2.split("\\")[2];
-        this.iresonciliation.reconciliation[0].data.output_file = this.nestedForm.value.outputFileName;
-        this.iresonciliation.reconciliation[0].data.previousrun = false; //need to confirm
-        this.iresonciliation.reconciliation[0].key_columns.file1_key_columns_no = this.getColumnNumberFile1(this.nestedForm.value.keyColFile1);  //need to confirm
-        this.iresonciliation.reconciliation[0].key_columns.file2_key_columns_no = this.getColumnNumberFile2(this.nestedForm.value.keyColFile2);
-        this.iresonciliation.reconciliation[0].key_columns.file1_group_column_no = this.getColumnNumberFile1(this.nestedForm.value.groupColFile1)
-        this.iresonciliation.reconciliation[0].key_columns.file2_group_column_no = this.getColumnNumberFile2(this.nestedForm.value.groupColFile2)
-        this.iresonciliation.reconciliation[0].key_columns.group_flag = this.nestedForm.value.isGroupCol;
-        this.iresonciliation.reconciliation[0].key_columns.nonkey_truefalse_flag = this.nestedForm.value.isNonKey;
 
-    console.log('file array', this.iresonciliation);
+  getSingleColumnNumberFile1(colName: string): number {
+    return this.colFile1.indexOf(colName);
+  }
+  getSingleColumnNumberFile2(colName: string): number {
+    return this.colFile2.indexOf(colName);
+  }
+
+  hideAddNonKeyValueColumnOption(index): boolean {
+    if (this.addNonKeyValueColArray.length === 1 && index === 0) {
+      return false;
+    } else if (this.addNonKeyValueColArray.length > 1 && this.addNonKeyValueColArray.length === index+1) {
+      return false
+    } else  {
+      return true;
+    }
+  }
+  //addNonKeyNonValueColArray
+  hideDeleteNonKeyValueColumnOption(index): boolean {
+    if (this.addNonKeyValueColArray.length === 1 && index === 0) {
+      return true;
+    } else if (this.addNonKeyValueColArray.length > 1 && this.addNonKeyValueColArray.length === index+1) {
+      return false
+    } else  {
+      return true;
+    }
+  }
+
+  hideAddNonKeyNonValueColumnOption(index): boolean {
+    if (this.addNonKeyNonValueColArray.length === 1 && index === 0) {
+      return false;
+    } else if (this.addNonKeyNonValueColArray.length > 1 && this.addNonKeyNonValueColArray.length === index+1) {
+      return false
+    } else  {
+      return true;
+    }
+  }
+
+  hideDeleteNonKeyNonValueColumnOption(index): boolean {
+    if (this.addNonKeyNonValueColArray.length === 1 && index === 0) {
+      return true;
+    } else if (this.addNonKeyNonValueColArray.length > 1 && this.addNonKeyNonValueColArray.length === index+1) {
+      return false
+    } else  {
+      return true;
+    }
+  }
+  printJSON() {
+    const data: fileData = {
+      input_file1: this.nestedForm.value.file1.split("\\")[2],
+      input_file2: this.nestedForm.value.file2.split("\\")[2],
+      output_file: this.nestedForm.value.outputFileName,
+      previousrun: false
+    }
+    const key_columns: keyColumns = {
+      file1_key_columns_no: this.getColumnNumberFile1(this.nestedForm.value.keyColFile1),
+      file2_key_columns_no: this.getColumnNumberFile2(this.nestedForm.value.keyColFile2),
+      file1_group_column_no: this.getColumnNumberFile1(this.nestedForm.value.groupColFile1),
+      file2_group_column_no: this.getColumnNumberFile2(this.nestedForm.value.groupColFile2),
+      group_flag: this.nestedForm.value.isGroupCol,
+      nonkey_truefalse_flag: this.nestedForm.value.isNonKey
+    }
+    this.nestedForm.value.nonKeyValueCol.forEach(val => {
+      val.file1_column_no = this.getSingleColumnNumberFile1(val.file1_column_no[0])
+      val.file2_column_no = this.getSingleColumnNumberFile2(val.file2_column_no[0])
+      val.neg_tolerance_limit = parseInt(val.neg_tolerance_limit)
+      val.pos_tolerance_limit = parseInt(val.pos_tolerance_limit)
+    });
+    const nonkey_value_columns: nonKeyColumn[] = this.nestedForm.value.nonKeyValueCol;
+
+    this.nestedForm.value.nonKeyNonValueCol.forEach(val => {
+      val.file1_column_no = this.getSingleColumnNumberFile1(val.file1_column_no[0])
+      val.file2_column_no = this.getSingleColumnNumberFile2(val.file2_column_no[0])
+    });
+
+    const nonkey_truefalse_columns: nonKeyNonValueColumn[] = this.nestedForm.value.nonKeyNonValueCol;
+
+    const probable_match = { output_file: this.nestedForm.value.email }
+
+    const reconciliation = [{ data, key_columns, nonkey_value_columns, nonkey_truefalse_columns, probable_match }]
+
+
+    console.log('file array', reconciliation);
+
   }
 
 }

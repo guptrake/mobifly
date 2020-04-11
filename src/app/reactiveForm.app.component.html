@@ -18,8 +18,9 @@
 
                     <div class="col-md-3 col-md-offset-2">
                         <label for="fileInput2">File 2</label>
-                        <input type="file" id="fileInput2" name="file2" class="btn btn-secondary upload size_20"
-                            aria-haspopup="true" id="input-file2" required="required" formControlName="file2"
+                        <input type="file" id="fileInput2" name="file2"
+                            class="btn btn-secondary custom-button upload font_famliy" aria-haspopup="true"
+                            id="input-file2" required="required" formControlName="file2"
                             (change)="handleFile2Upload($event)">
                         <img title="You can upload ZIP or CSV File. ZIP can have only 1 file. Name of File shall be same as ZIP File"
                             src="http://pwcnic-2100337383.ap-south-1.elb.amazonaws.com/revreco-app2/assets/images/info2.png"
@@ -38,7 +39,7 @@
                     </div>
 
                     <div class="col-md-3 col-md-offset-2" tabindex="0">
-                        <label for="KeyColddf2">File2</label>
+                        <label for="KeyColdd">File2</label>
                         <ng-multiselect-dropdown class="text-color" formControlName="keyColFile2"
                             [placeholder]="'Key Column File2'" [data]="colFile2" [(ngModel)]="selectedItems"
                             [settings]="dropdownSettings">
@@ -48,7 +49,8 @@
                 <div class="row">
                     <div class="col-md-3 col-md-offset-2">
                         <input id="groupcolumns" type="checkbox" formControlName="isGroupCol"
-                            (change)="isGroupSelected($event)"> Is Group?
+                            (change)="isGroupSelected($event)">
+                        <span style="color: #000;"> Is Group?</span>
                         <img title="By default, output results are grouped at key columns. Select 'Is Group' to add any other column
                              in addition to the key column for grouping.For example if invoice no. is a key column then all value columns
                               would be clubbed at invoice level.If grouping is required at invoice and rate level, then rate column can be
@@ -77,14 +79,14 @@
                 <div>
                     <h1>Non Key Value Column</h1>
                     <hr>
-                    <div class="row" formArrayName="nonKeyValueCol">
+                    <div class="container" formArrayName="nonKeyValueCol">
                         <div class="row" *ngFor="let item of addNonKeyValueColArray.controls; let i = index"
                             [formGroupName]="i">
                             <div class="col-md-2 col-md-offset-2" tabindex="0">
                                 <label for="KeyColddf1">File1</label>
                                 <ng-multiselect-dropdown class="text-color" [placeholder]="'NonKeyValue'"
                                     [data]="colFile1" [settings]="singledropdownSettings"
-                                    formControlName="nonKeyvalueColFile1">
+                                    formControlName="file1_column_no">
                                 </ng-multiselect-dropdown>
                             </div>
 
@@ -92,28 +94,38 @@
                                 <label for="KeyColddf2">File2</label>
                                 <ng-multiselect-dropdown class="text-color" [placeholder]="'NonKeyValue'"
                                     [data]="colFile2" [settings]="singledropdownSettings"
-                                    formControlName="nonKeyvalueColFile2">
+                                    formControlName="file2_column_no">
                                 </ng-multiselect-dropdown>
                             </div>
+                            //
                             <div class="col-md-2 col-md-offset-2" tabindex="0">
 
                                 <label for="nTolrence">Negative Tolrence Limit</label>
-                                <input id="nTolrence" #negTol type="text" formControlName="negativetolrence">
+                                <input id="nTolrence" #negTol type="text" formControlName="neg_tolerance_limit">
                                 <label for="pTolrence">Positive Tolrence Limit</label>
-                                <input id="pTolrence" #posTol type="text" formControlName="positiveTolrence">
+                                <input id="pTolrence" #posTol type="text" formControlName="pos_tolerance_limit">
                                 <label for="oHeading">Output Column Heading </label>
-                                <input id="oHeading" #oheading type="text" formControlName="outputColHeading">
+                                <input id="oHeading" #oheading type="text" formControlName="output_column_heading">
                             </div>
-                            <div class="row"> <br>
-                                <div class="col-md-1 col-md-offset-8" tabindex="0">
-                                    <a class="btn" (click)="addMoreNonKeyValueCol()">
-                                        <i class="glyphicon glyphicon-plus"> </i>
-                                    </a>
-                                </div>
-                                <div class="col-md-1 col-md-offset-10" [hidden]="i==0" tabindex="0">
-                                    <a class="btn" (click)="removeNonKeyValueCol(i)">
-                                        <i class="glyphicon glyphicon-minus"> </i>
-                                    </a>
+
+
+                            <div class="container">
+                                <div class="row">
+
+
+                                    <div class="col-md-1 col-md-offset-8" [hidden]="hideAddNonKeyValueColumnOption(i)"
+                                        tabindex="0">
+                                        <a class="btn" (click)="addMoreNonKeyValueCol()">
+                                            <i class="glyphicon glyphicon-plus"> </i>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-1" [hidden]="hideDeleteNonKeyValueColumnOption(i)" tabindex="0">
+                                        <a class="btn" (click)="removeNonKeyValueCol(i)">
+                                            <i class="glyphicon glyphicon-minus"> </i>
+                                        </a>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -126,24 +138,25 @@
                     <div class="row">
                         <div class="col-md-3 col-md-offset-2">
                             <input id="groupcolumns" type="checkbox" formControlName="isNonKey"
-                                (change)="nonKeycheckBoxEvent($event)"> Is Non Key?
+                                (change)="nonKeycheckBoxEvent($event)">
+                            <span style="color: #000;"> Is Non Key?</span>
                             <img title="By default, output results are grouped at key columns. Select 'Is Group' to add any other column
                                      in addition to the key column for grouping.For example if invoice no. is a key column then all value columns
                                       would be clubbed at invoice level.If grouping is required at invoice and rate level, then rate column can be
                                     captured here"
                                 src="http://pwcnic-2100337383.ap-south-1.elb.amazonaws.com/revreco-app2/assets/images/info2.png"
-                                style="position:absolute;top:40px;right: 170px;">
+                                style="position:absolute;top:40px;right: 155px;">
                         </div>
                     </div>
                     <div class="row" formArrayName="nonKeyNonValueCol">
-                        <div class="row" *ngFor="let item of addNonKeyNonValueColArray.controls; let i = index"
-                            [formGroupName]="i">
+                        <div class="row" *ngFor="let item of addNonKeyNonValueColArray.controls; let j = index"
+                            [formGroupName]="j">
 
                             <div class="col-md-2 col-md-offset-2" tabindex="0">
                                 <label for="KeyColddf1">File1</label>
                                 <ng-multiselect-dropdown class="text-color" [placeholder]="'NonKeyNoValue'"
                                     [data]="colFile1" [settings]="singledropdownSettings"
-                                    formControlName="nonKeyNonvalueColFile1" [ngClass]="isNonKeyDDChecked()">
+                                    formControlName="file1_column_no" [ngClass]="isNonKeyDDChecked()">
                                 </ng-multiselect-dropdown>
                             </div>
 
@@ -151,21 +164,22 @@
                                 <label for="KeyColddf2">File2</label>
                                 <ng-multiselect-dropdown class="text-color" [placeholder]="'NonKeyNoValue'"
                                     [data]="colFile2" [settings]="singledropdownSettings"
-                                    formControlName="nonKeyNonvalueColFile2" [ngClass]="isNonKeyDDChecked()">
+                                    formControlName="file2_column_no" [ngClass]="isNonKeyDDChecked()">
                                 </ng-multiselect-dropdown>
                             </div>
                             <div class="col-md-2 col-md-offset-2" tabindex="0">
                                 <label for="nTolrence">Output Heading Column</label>
-                                <input id="nTolrence" type="text" formControlName="outputColHeadingNonValue">
+                                <input id="nTolrence" type="text" formControlName="output_column_heading">
                             </div>
                             <div class="row"> <br>
-                                <div class="col-md-1 col-md-offset-8" tabindex="0">
+                                <div class="col-md-1 col-md-offset-8" [hidden]="hideAddNonKeyNonValueColumnOption(j)"
+                                    tabindex="0">
                                     <a class="btn" (click)="addMoreNonKeyNonValueCol()">
                                         <i class="glyphicon glyphicon-plus"> </i>
                                     </a>
                                 </div>
-                                <div class="col-md-1 col-md-offset-10" [hidden]="i==0" tabindex="0">
-                                    <a class="btn" (click)="removeNonKeyNonValueCol(i)">
+                                <div class="col-md-1" [hidden]="hideDeleteNonKeyNonValueColumnOption(j)" tabindex="0">
+                                    <a class="btn" (click)="removeNonKeyNonValueCol(j)">
                                         <i class="glyphicon glyphicon-minus"> </i>
                                     </a>
                                 </div>
